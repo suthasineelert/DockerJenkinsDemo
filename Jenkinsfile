@@ -1,10 +1,8 @@
 node {
-    environment {
-       registry = “suruthinee/hellonode”
-       registryCredential = docker-hub-credentials
-       dockerImage = ‘’
-    }
-    agent any
+    def app
+    def dockerImage
+    def registryCredentials = 'docker-hub-credentials'
+    def registry = "suruthinee/hellonode"
 
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
@@ -29,8 +27,13 @@ node {
     }
 
     stage('Push image') {
-        docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-            dockerImage.push()
+        /* Finally, we'll push the image with two tags:
+         * First, the incremental build number from Jenkins
+         * Second, the 'latest' tag.
+         * Pushing multiple tags is cheap, as all the layers are reused. */
+        docker.withRegistry('', registryCredentials) {
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
         }
     }
 }
