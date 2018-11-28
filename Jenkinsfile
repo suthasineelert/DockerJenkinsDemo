@@ -14,7 +14,7 @@ node {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-	dockerImage = docker.build(registry + ${env.BUILD_NUMBER})
+	app = docker.build(registry)
     }
 
     stage('Test image') {
