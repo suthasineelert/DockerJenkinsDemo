@@ -36,4 +36,10 @@ node {
             app.push("latest")
         }
     }
+
+    stage('Deploy') {
+	sh 'docker stop hellonode'
+	sh 'docker rm hellonode'
+	sh 'docker run -p 8000:8000 --name hellonode suruthinee/hellonode'
+    }
 }
