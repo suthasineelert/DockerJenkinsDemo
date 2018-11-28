@@ -40,6 +40,6 @@ node {
     stage('Deploy') {
 	sh 'docker stop hellonode || true && docker rm hellonode || true'
 
-	sh 'docker run -p 8000:8000 --name hellonode suruthinee/hellonode'
+	sh 'docker run -d -p 8000:8000 --name hellonode suruthinee/hellonode'
     }
 }
