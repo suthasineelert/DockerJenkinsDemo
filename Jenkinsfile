@@ -1,4 +1,4 @@
-pipeline {
+node {
     environment {
        registry = “suruthinee/hellonode”
        registryCredential = docker-hub-credentials
@@ -16,7 +16,7 @@ pipeline {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-	dockerImage = docker.build(registry + “:$BUILD_NUMBER”)
+	dockerImage = docker.build(registry + ${env.BUILD_NUMBER})
     }
 
     stage('Test image') {
@@ -29,7 +29,7 @@ pipeline {
     }
 
     stage('Push image') {
-        docker.withRegistry('', registryCredential) {
+        docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
             dockerImage.push()
         }
     }
